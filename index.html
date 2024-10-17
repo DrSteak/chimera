@@ -172,23 +172,24 @@
                 <span>Issue #1 - Art and Culture</span>
                 <a href="pdf/CHIMERA FANZINE SPREADS.pdf" target="_blank">Download PDF</a>
             </li>
-            <!-- Add more issues as needed -->
         </ul>
         
         <div class="donation">
             <a href="https://www.paypal.com/donate" target="_blank">Donate via PayPal</a>
         </div>
-        
-        <div class="pdf-navigation">
-            <button id="prev-page">Previous</button>
-            <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
-            <button id="next-page">Next</button>
-        </div>
+
         <div class="pdf-viewer-container">
             <canvas id="pdf-canvas"></canvas>
             <div class="clickable-zone left" onclick="onPrevPage()"></div>
             <div class="clickable-zone right" onclick="onNextPage()"></div>
         </div>
+
+        <div class="pdf-navigation">
+            <button id="prev-page">Previous</button>
+            <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
+            <button id="next-page">Next</button>
+        </div>
+
         
     </div>
     <script>

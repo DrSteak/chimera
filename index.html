@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chimera</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        header {
+            background-color: #1f1f1f;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .content {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .fanzine-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .fanzine-info img {
+            max-width: 100%;
+            height: auto;
+        }
+        .fanzine-info h2 {
+            margin: 10px 0;
+            color: #fff;
+        }
+        .pdf-list {
+            list-style: none;
+            padding: 0;
+        }
+        .pdf-list li {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pdf-list a {
+            text-decoration: none;
+            color: #bb86fc;
+            font-weight: bold;
+        }
+        .pdf-list a:hover {
+            text-decoration: underline;
+        }
+        .pdf-viewer {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        @media (max-width: 600px) {
+            .pdf-viewer {
+                height: 400px;
+            }
+        }
+        .donation {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .donation a {
+            text-decoration: none;
+            color: #bb86fc;
+            font-weight: bold;
+            background-color: #333;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .donation a:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>            <img src="images/logo.png" alt="Logo" style="max-width: 400px; margin-bottom: 20px;">
+        </h1>
+        <!-- <p>Smash colon</p> -->
+    </header>
+    <div class="content">
+        <div class="fanzine-info">
+            <h1>Chimera</h1>
+
+            <h2>Fanzine Supporting Lebanon</h2>
+            <!-- <p>A collection of issues exploring Lebanese culture and art.</p> -->
+        </div>
+        <ul class="pdf-list">
+            <li>
+                <span>Issue #1 - Art and Culture</span>
+                <a href="issue1.pdf" target="_blank">Download PDF</a>
+            </li>
+            <!-- Add more issues as needed -->
+        </ul>
+        
+        <div class="donation">
+            <a href="https://www.paypal.com/donate" target="_blank">Donate via PayPal</a>
+        </div>
+        
+        <iframe class="pdf-viewer" src="https://www.rd.usda.gov/sites/default/files/pdf-sample_0.pdf"></iframe>
+    </div>
+</body>
+</html>

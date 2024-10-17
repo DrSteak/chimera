@@ -125,6 +125,22 @@
         display: block;
     }
 
+    .clickable-zone {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+        cursor: pointer;
+    }
+
+    .clickable-zone.left {
+        left: 0;
+    }
+
+    .clickable-zone.right {
+        right: 0;
+    }
+
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
@@ -162,6 +178,8 @@
         </div>
         <div class="pdf-viewer-container">
             <canvas id="pdf-canvas"></canvas>
+            <div class="clickable-zone left" onclick="onPrevPage()"></div>
+            <div class="clickable-zone right" onclick="onNextPage()"></div>
         </div>
         
     </div>

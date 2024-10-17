@@ -142,7 +142,7 @@
     }
 
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="script/pdf.min.js"></script>
 
 </head>
 <body>
@@ -187,7 +187,7 @@
         const url = 'pdf/CHIMERA FANZINE SPREADS.pdf';
     
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'script/pdf.worker.min.js';
     
         let pdfDoc = null,
             pageNum = 1,

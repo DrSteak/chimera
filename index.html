@@ -84,6 +84,35 @@
         .donation a:hover {
             background-color: #444;
         }
+
+    .pdf-navigation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    .pdf-navigation button {
+        background-color: #333;
+        color: #bb86fc;
+        border: none;
+        padding: 10px 20px;
+        margin: 0 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .pdf-navigation button:hover {
+        background-color: #444;
+        transform: scale(1.05);
+    }
+
+    .pdf-navigation span {
+        color: #e0e0e0;
+        font-size: 16px;
+    }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 
@@ -114,48 +143,88 @@
             <a href="https://www.paypal.com/donate" target="_blank">Donate via PayPal</a>
         </div>
         
+        <div class="pdf-navigation">
+            <button id="prev-page">Previous</button>
+            <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
+            <button id="next-page">Next</button>
+        </div>
         <div class="pdf-viewer-container">
             <canvas id="pdf-canvas"></canvas>
-        </div>    
+        </div>
+        
     </div>
-<script>
-    const url = 'pdf/CHIMERA FANZINE SPREADS.pdf';
-
-    const pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
-
-    const loadingTask = pdfjsLib.getDocument(url);
-    loadingTask.promise.then(pdf => {
-        console.log('PDF loaded');
-
-        // Fetch the first page
-        const pageNumber = 1;
-        pdf.getPage(pageNumber).then(page => {
-            console.log('Page loaded');
-
-            const scale = 1.5;
-            const viewport = page.getViewport({ scale: scale });
-
-            // Prepare canvas using PDF page dimensions
-            const canvas = document.getElementById('pdf-canvas');
-            const context = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            // Render PDF page into canvas context
-            const renderContext = {
-                canvasContext: context,
-                viewport: viewport
-            };
-            const renderTask = page.render(renderContext);
-            renderTask.promise.then(() => {
-                console.log('Page rendered');
+    <script>
+        const url = 'pdf/CHIMERA FANZINE SPREADS.pdf';
+    
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+    
+        let pdfDoc = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            scale = 1.5,
+            canvas = document.getElementById('pdf-canvas'),
+            ctx = canvas.getContext('2d');
+    
+        function renderPage(num) {
+            pageRendering = true;
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale: scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+    
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                const renderTask = page.render(renderContext);
+    
+                renderTask.promise.then(() => {
+                    pageRendering = false;
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
             });
+    
+            document.getElementById('page-num').textContent = num;
+        }
+    
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+    
+        function onPrevPage() {
+            if (pageNum <= 1) {
+                return;
+            }
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+    
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) {
+                return;
+            }
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+    
+        document.getElementById('prev-page').addEventListener('click', onPrevPage);
+        document.getElementById('next-page').addEventListener('click', onNextPage);
+    
+        pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
+            pdfDoc = pdfDoc_;
+            document.getElementById('page-count').textContent = pdfDoc.numPages;
+            renderPage(pageNum);
         });
-    }, reason => {
-        console.error(reason);
-    });
-</script>    
+    </script>
 </body>
 
 
